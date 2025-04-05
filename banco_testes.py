@@ -9,7 +9,6 @@
 
 import datetime
 import string
-from itertools import count
 
 titulo = " Banco Duzz "
 print("")
@@ -26,7 +25,6 @@ print("""
     
     Obrigado por ser nosso cliente!
 """)
-
 valor_em_conta = 50
 limite = 500.00
 quantidade_transações = 3
@@ -34,7 +32,7 @@ extrato = []
 mascara = "%d/%m/%Y %H:%M:%S"
 usuarios = []
 contas_bancarias = []
-numero_da_conta = count(1)
+numero_da_conta = 1
 
 # FAZER SAQUE
 def fazer_saque(*, saque, valor_em_conta, extrato, quantidade_transações):
@@ -119,21 +117,17 @@ def criar_usuarios(nome, data_nascimento, cpf, endereco, usuarios,):
         return ""
 
 # CRIAR CONTA BANCÁRIA
-def criar_conta_bancaria(cpf, usuarios):
+def criar_conta_bancaria(cpf,usuarios,numero_da_conta):
     agencia = "0001"
-    usuario_encontrado = any(u["cpf"] == cpf for u in usuarios)
     
-    if not usuario_encontrado:
-        print("Usuário não encontrado!\n")
-        return numero_da_conta  # Retorna sem criar a conta
-
-    num_conta = next(numero_da_conta)
-    contas_bancarias.append({"Num_conta": num_conta, "agencia": agencia, "cpf": cpf})
-    
-    print("Conta criada com sucesso!\n")
-    print(f"Num_conta {numero_da_conta}, {contas_bancarias}")
-    return ""
-
+    if cpf in usuarios["cpf"]:
+        contas_bancarias.append({"Num_conta": numero_da_conta, "agencia": agencia, "cpf": cpf})
+        print("\nConta criada com sucesso!")
+    else:
+        print("\nUsuário não encontrado!")
+        
+    numero_da_conta += 1
+        
 
 while quantidade_transações > 0:
     print("=" * 100)
@@ -164,7 +158,7 @@ while quantidade_transações > 0:
         if len(usuarios) > 0:
             print("\nCadastro de Conta Bancária:")
             cpf = input("CPF do usuário: ")
-            nova_conta = criar_conta_bancaria(cpf,usuarios)
+            criar_conta_bancaria(cpf,usuarios,numero_da_conta)
         else:
             print("\nNenhum usuário cadastrado!")
     
@@ -180,6 +174,10 @@ else:
     print("\nLimite de operações atingido! O limite de operações será redefinido após às 00:00h")
 
 
+
+
+# Criar conta bancária, o programa deve armazenar as contas em uma lista, cada conta deve ter: numero da conta, agencia e cpf do usuário.O número da conta é sequencial e começa em 1. O número da agência é fixo: "0001". Não podemos cadastrar 2 contas com o mesmo número. Cada usuário pode ter mais de uma conta, mas a conta só pode ter um usuário.
+# Para vincular um usuário a uma conta filtre a lista de usuários buscando o cpf informado para cada usuário da lista.
 
 
 
